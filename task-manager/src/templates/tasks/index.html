@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <h2 class="mb-4 fw-bold text-primary">Mis Tareas</h2>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary shadow" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="resetForm()">
+            Nueva Tarea
+        </button>
+    </div>
+</div>
+
+<div class="list-group" id="tasks-container">
+    <!-- Las tareas se cargarán aquí mediante JavaScript -->
+    <div class="list-group-item text-center text-muted py-3">
+        <div class="spinner-border spinner-border-sm me-2" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        Cargando tareas...
+    </div>
+</div>
+
+<!-- Modal para agregar/editar tareas -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">Tarea</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <input type="hidden" id="taskId" value="">
+                    <div class="mb-3">
+                        <label for="taskTitle" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="taskTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="taskDescription" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3 form-check" id="completedContainer" style="display: none;">
+                        <input type="checkbox" class="form-check-input" id="taskCompleted">
+                        <label class="form-check-label" for="taskCompleted">Completada</label>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function resetForm() {
+        document.getElementById('taskId').value = '';
+        document.getElementById('taskTitle').value = '';
+        document.getElementById('taskDescription').value = '';
+        document.getElementById('completedContainer').style.display = 'none';
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+# Entornos virtuales
+venv/
+env/
+
+# Archivos de configuración sensibles
+.env
+
+# Archivos de bases de datos
+*.sqlite3
+*.db
+
+# Archivos de Python compilados
+__pycache__/
+*.pyc
+
+# Archivos de Docker
+*.log
