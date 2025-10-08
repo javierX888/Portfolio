@@ -1,6 +1,6 @@
 # Task Manager
 
-Gestor de tareas personal desarrollado con **Flask**, **Bootstrap 5** y **SQLite**. Permite a los usuarios registrarse, iniciar sesión y gestionar sus tareas de manera sencilla y moderna.
+Gestor de tareas personal desarrollado con **Flask**, **Bootstrap 5** y **PostgreSQL**. Permite a los usuarios registrarse, iniciar sesión y gestionar sus tareas de manera sencilla y moderna.
 
 ---
 

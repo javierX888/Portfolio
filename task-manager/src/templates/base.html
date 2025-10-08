@@ -29,7 +29,6 @@
                                  class="rounded-circle me-2" 
                                  style="width: 32px; height: 32px; object-fit: cover; border: 2px solid #fff;">
                             <span class="d-lg-inline">
-                                <i class="fas fa-user-circle me-1 d-lg-none"></i>
                                 {{ current_user.get_display_name() if current_user.full_name else current_user.username }}
                             </span>
                         </a>
