@@ -1,6 +1,6 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -23,5 +23,12 @@ def create_app():
     def load_user(user_id):
         from src.models import User
         return User.query.get(int(user_id))
+    
+    # Ruta de bienvenida que redirecciona automáticamente
+    @app.route('/welcome')
+    def welcome():
+        if current_user.is_authenticated:
+            return redirect(url_for('tasks.index'))
+        return redirect(url_for('auth.login'))
     
     return app

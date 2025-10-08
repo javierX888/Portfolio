@@ -1,10 +1,17 @@
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for
 from flask_login import login_required, current_user
 from src.models import db, Task
 
 tasks_bp = Blueprint('tasks', __name__)
 
-@tasks_bp.route('/', endpoint='index')
+@tasks_bp.route('/')
+def home():
+    """Ruta principal que redirecciona según autenticación"""
+    if current_user.is_authenticated:
+        return redirect(url_for('tasks.index'))
+    return redirect(url_for('auth.login'))
+
+@tasks_bp.route('/tasks', endpoint='index')
 @login_required
 def index():
     return render_template('tasks/index.html')
