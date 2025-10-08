@@ -31,14 +31,14 @@
                     </div>
                     
                     <div class="col-md-8">
-                        <form method="POST" action="{{ url_for('auth.profile') }}">
+                        <form method="POST" action="{{ url_for('auth.profile') }}" enctype="multipart/form-data">
                             {{ form.hidden_tag() }}
                             
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
                                     <i class="fas fa-user me-2"></i>{{ form.full_name.label.text }}
                                 </label>
-                                {{ form.full_name(class="form-control form-control-lg", placeholder="Ingresa tu nombre completo") }}
+                                {{ form.full_name(class="form-control form-control-lg", placeholder="Ej: Javier Gacitúa") }}
                                 {% if form.full_name.errors %}
                                     <div class="text-danger mt-1">
                                         {% for error in form.full_name.errors %}
@@ -51,34 +51,59 @@
                             
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
-                                    <i class="fas fa-image me-2"></i>{{ form.profile_picture.label.text }}
+                                    <i class="fas fa-camera me-2"></i>Foto de Perfil
                                 </label>
-                                {{ form.profile_picture(class="form-control form-control-lg", placeholder="https://ejemplo.com/tu-foto.jpg", id="profilePictureInput") }}
-                                {% if form.profile_picture.errors %}
-                                    <div class="text-danger mt-1">
-                                        {% for error in form.profile_picture.errors %}
-                                            <small>{{ error }}</small>
-                                        {% endfor %}
+                                
+                                <!-- Opción 1: Subir desde dispositivo -->
+                                <div class="border rounded p-3 mb-3 bg-light">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-upload text-primary me-2"></i>
+                                        <strong>Opción 1: Subir desde tu dispositivo</strong>
                                     </div>
-                                {% endif %}
-                                <small class="form-text text-muted">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    Ingresa la URL de una imagen (https://...) o usa servicios como 
-                                    <a href="https://imgur.com/upload" target="_blank" rel="noopener">Imgur</a>,
-                                    <a href="https://postimages.org/" target="_blank" rel="noopener">PostImages</a>, o
-                                    <a href="https://imgbb.com/" target="_blank" rel="noopener">ImgBB</a>
-                                </small>
+                                    {{ form.profile_picture_file(class="form-control", id="profilePictureFile", accept="image/jpeg,image/jpg,image/png,image/gif,image/webp") }}
+                                    {% if form.profile_picture_file.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.profile_picture_file.errors %}
+                                                <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <small class="form-text text-muted d-block mt-1">
+                                        <i class="fas fa-check-circle text-success me-1"></i>
+                                        Formatos: JPG, PNG, GIF, WebP | Tamaño máximo: 500KB
+                                    </small>
+                                </div>
+
+                                <!-- Opción 2: URL de imagen -->
+                                <div class="border rounded p-3 bg-light">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-link text-primary me-2"></i>
+                                        <strong>Opción 2: Usar URL de imagen</strong>
+                                    </div>
+                                    {{ form.profile_picture(class="form-control", placeholder="https://ejemplo.com/tu-foto.jpg", id="profilePictureInput") }}
+                                    {% if form.profile_picture.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.profile_picture.errors %}
+                                                <small>{{ error }}</small>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <small class="form-text text-muted d-block mt-1">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Pega cualquier URL de imagen de internet
+                                    </small>
+                                </div>
                             </div>
 
-                            <div class="alert alert-info" role="alert">
-                                <i class="fas fa-lightbulb me-2"></i>
-                                <strong>Tip:</strong> Para subir tu foto:
-                                <ol class="mb-0 mt-2">
-                                    <li>Ve a <a href="https://imgur.com/upload" target="_blank" rel="noopener"><strong>Imgur.com</strong></a></li>
-                                    <li>Sube tu foto</li>
-                                    <li>Copia el enlace directo de la imagen</li>
-                                    <li>Pégalo aquí arriba</li>
-                                </ol>
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Requisitos de la imagen:</strong>
+                                <ul class="mb-0 mt-2 small">
+                                    <li><strong>Formato:</strong> JPG, PNG, GIF o WebP</li>
+                                    <li><strong>Tamaño:</strong> Máximo 500KB (para mejor rendimiento)</li>
+                                    <li><strong>Dimensiones recomendadas:</strong> 400x400 píxeles (cuadrada)</li>
+                                    <li><strong>URL:</strong> Debe terminar en .jpg, .png, .gif o .webp</li>
+                                </ul>
                             </div>
                             
                             <div class="d-grid gap-2">

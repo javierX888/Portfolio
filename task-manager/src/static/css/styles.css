@@ -48,6 +48,32 @@ body {
     box-shadow: 0 1px 4px rgba(0,0,0,0.03);
 }
 
+/* Navbar responsive */
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        text-align: left;
+        padding-top: 1rem;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Perfil en navbar */
+.nav-link img {
+    transition: transform 0.2s;
+}
+
+.nav-link:hover img {
+    transform: scale(1.1);
+}
+
 .list-group-item:hover {
     background-color: #f8f9fa;
 }
