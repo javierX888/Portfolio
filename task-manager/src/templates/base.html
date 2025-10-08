@@ -15,15 +15,18 @@
             <a class="navbar-brand" href="/"><i class="fas fa-tasks me-2"></i>Task Manager</a>
             <div class="navbar-nav ms-auto align-items-center">
                 {% if current_user.is_authenticated %}
-                    <div class="d-flex align-items-center me-3">
-                        <img src="{{ current_user.profile_picture or 'https://ui-avatars.com/api/?name=' + current_user.username + '&background=007bff&color=fff' }}" 
-                             alt="Profile" 
-                             class="rounded-circle me-2" 
-                             style="width: 35px; height: 35px; object-fit: cover; border: 2px solid #fff;">
-                        <span class="text-light">
-                            Hola, <strong>{{ current_user.get_display_name() if current_user.full_name else current_user.username }}</strong>
-                        </span>
-                    </div>
+                    <a href="{{ url_for('auth.profile') }}" class="text-decoration-none">
+                        <div class="d-flex align-items-center me-3" style="cursor: pointer;">
+                            <img src="{{ current_user.profile_picture or 'https://ui-avatars.com/api/?name=' + current_user.username + '&background=007bff&color=fff' }}" 
+                                 alt="Profile" 
+                                 class="rounded-circle me-2" 
+                                 style="width: 35px; height: 35px; object-fit: cover; border: 2px solid #fff;">
+                            <span class="text-light">
+                                Hola, <strong>{{ current_user.get_display_name() if current_user.full_name else current_user.username }}</strong>
+                            </span>
+                        </div>
+                    </a>
+                    <a class="nav-link" href="{{ url_for('auth.profile') }}"><i class="fas fa-user-circle me-1"></i>Perfil</a>
                     <a class="nav-link" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión</a>
                 {% else %}
                     <a class="nav-link" href="{{ url_for('auth.login') }}"><i class="fas fa-sign-in-alt me-1"></i>Login</a>
