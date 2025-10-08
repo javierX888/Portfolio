@@ -50,36 +50,69 @@ def profile():
     form = ProfileForm()
     
     if form.validate_on_submit():
-        current_user.full_name = form.full_name.data
-        
-        # Manejar la foto de perfil
-        if form.profile_picture_file.data:
-            # Si se subió un archivo, convertirlo a base64
-            import base64
-            file = form.profile_picture_file.data
-            file_data = file.read()
+        try:
+            current_user.full_name = form.full_name.data
             
-            # Verificar tamaño (máximo 500KB para base64)
-            if len(file_data) > 500 * 1024:
-                flash('La imagen es muy grande. Máximo 500KB. Intenta comprimir la imagen primero.', 'warning')
-                return redirect(url_for('auth.profile'))
+            # Manejar la foto de perfil
+            if form.profile_picture_file.data:
+                # Si se subió un archivo, convertirlo a base64
+                import base64
+                from PIL import Image
+                import io
+                
+                file = form.profile_picture_file.data
+                
+                try:
+                    # Abrir la imagen con PIL
+                    img = Image.open(file)
+                    
+                    # Convertir a RGB si es necesario
+                    if img.mode in ('RGBA', 'P', 'LA'):
+                        img = img.convert('RGB')
+                    
+                    # Redimensionar si es muy grande (máximo 800x800)
+                    max_size = 800
+                    if img.width > max_size or img.height > max_size:
+                        img.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+                    
+                    # Guardar en un buffer con compresión
+                    buffer = io.BytesIO()
+                    img.save(buffer, format='JPEG', quality=85, optimize=True)
+                    file_data = buffer.getvalue()
+                    
+                    # Verificar tamaño final (máximo 400KB)
+                    if len(file_data) > 400 * 1024:
+                        # Comprimir más si es necesario
+                        buffer = io.BytesIO()
+                        img.save(buffer, format='JPEG', quality=70, optimize=True)
+                        file_data = buffer.getvalue()
+                        
+                        if len(file_data) > 400 * 1024:
+                            flash('La imagen es muy grande incluso después de comprimirla. Por favor usa una imagen más pequeña.', 'warning')
+                            return redirect(url_for('auth.profile'))
+                    
+                    # Convertir a base64
+                    base64_data = base64.b64encode(file_data).decode('utf-8')
+                    current_user.profile_picture = f'data:image/jpeg;base64,{base64_data}'
+                    
+                except Exception as e:
+                    flash(f'Error al procesar la imagen: {str(e)}. Intenta con otra imagen.', 'danger')
+                    return redirect(url_for('auth.profile'))
+                
+            elif form.profile_picture.data:
+                # Si se ingresó una URL, usarla
+                url = form.profile_picture.data.strip()
+                if url:
+                    current_user.profile_picture = url
             
-            # Convertir a base64
-            file_ext = file.filename.rsplit('.', 1)[1].lower()
-            mime_type = f'image/{file_ext}'
-            if file_ext == 'jpg':
-                mime_type = 'image/jpeg'
+            db.session.commit()
+            flash('¡Perfil actualizado correctamente!', 'success')
+            return redirect(url_for('auth.profile'))
             
-            base64_data = base64.b64encode(file_data).decode('utf-8')
-            current_user.profile_picture = f'data:{mime_type};base64,{base64_data}'
-            
-        elif form.profile_picture.data:
-            # Si se ingresó una URL, usarla
-            current_user.profile_picture = form.profile_picture.data
-        
-        db.session.commit()
-        flash('¡Perfil actualizado correctamente!', 'success')
-        return redirect(url_for('auth.profile'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error al actualizar el perfil: {str(e)}', 'danger')
+            return redirect(url_for('auth.profile'))
     
     # Pre-llenar el formulario con los datos actuales
     if request.method == 'GET':

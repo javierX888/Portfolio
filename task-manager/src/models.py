@@ -8,7 +8,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     full_name = db.Column(db.String(100))
-    profile_picture = db.Column(db.String(200), default='https://ui-avatars.com/api/?name=User&background=007bff&color=fff')
+    profile_picture = db.Column(db.Text, default='https://ui-avatars.com/api/?name=User&background=007bff&color=fff')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     tasks = db.relationship('Task', backref='user', lazy=True)
 

@@ -165,5 +165,93 @@ document.getElementById('profilePictureInput').addEventListener('input', functio
         };
     }
 });
+
+// Comprimir y previsualizar imagen cuando se selecciona un archivo
+document.getElementById('profilePictureFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // Validar tipo de archivo
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+        alert('Por favor selecciona una imagen válida (JPG, PNG, GIF, WebP)');
+        e.target.value = '';
+        return;
+    }
+    
+    // Validar tamaño (máximo 5MB antes de comprimir)
+    if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen es muy grande. Por favor selecciona una imagen menor a 5MB');
+        e.target.value = '';
+        return;
+    }
+    
+    // Leer y comprimir la imagen
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+            // Crear canvas para comprimir
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            
+            // Redimensionar si es muy grande (máximo 800x800)
+            const maxSize = 800;
+            if (width > maxSize || height > maxSize) {
+                if (width > height) {
+                    height = (height / width) * maxSize;
+                    width = maxSize;
+                } else {
+                    width = (width / height) * maxSize;
+                    height = maxSize;
+                }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convertir a base64 con calidad reducida
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+            
+            // Verificar el tamaño final
+            const base64Length = compressedDataUrl.length;
+            const sizeInKB = (base64Length * 3) / 4 / 1024;
+            
+            if (sizeInKB > 400) {
+                // Si aún es muy grande, comprimir más
+                const extraCompressed = canvas.toDataURL('image/jpeg', 0.5);
+                document.getElementById('profilePreview').src = extraCompressed;
+            } else {
+                document.getElementById('profilePreview').src = compressedDataUrl;
+            }
+            
+            console.log(`Imagen procesada: ${sizeInKB.toFixed(2)} KB`);
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+
+// Validar antes de enviar el formulario
+document.querySelector('form').addEventListener('submit', function(e) {
+    const fileInput = document.getElementById('profilePictureFile');
+    const file = fileInput.files[0];
+    
+    if (file && file.size > 500 * 1024) {
+        const confirmSubmit = confirm(
+            'La imagen es grande y puede tardar en subir. ¿Deseas continuar?\n\n' +
+            'Recomendación: Usa una imagen más pequeña para mejor rendimiento.'
+        );
+        
+        if (!confirmSubmit) {
+            e.preventDefault();
+            return false;
+        }
+    }
+});
 </script>
 {% endblock %}
