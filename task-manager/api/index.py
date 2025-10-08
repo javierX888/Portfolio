@@ -1,50 +1,57 @@
-import sys
-import os
 from flask import Flask
 
-# Agregar el directorio padre al path para importar módulos
-current_dir = os.path.dirname(__file__)
-parent_dir = os.path.join(current_dir, '..')
-sys.path.insert(0, parent_dir)
-
-# Inicializar la aplicación Flask
+# Crear aplicación Flask simple
 app = Flask(__name__)
 
-try:
-    # Intentar importar y configurar la aplicación completa
-    from src import create_app
-    from src.models import db
-    
-    # Crear la aplicación Flask completa
-    full_app = create_app()
-    
-    # Configurar la aplicación para Vercel
-    app = full_app
-    
-    # Crear las tablas en el contexto de la aplicación
-    with app.app_context():
-        db.create_all()
-        
-    print("✅ Aplicación Flask configurada correctamente")
-    
-except Exception as e:
-    print(f"❌ Error configurando aplicación: {e}")
-    
-    # Crear rutas básicas como fallback
-    @app.route('/')
-    def hello():
-        return f'''
-        <h1>🚀 Flask en Vercel</h1>
-        <p><strong>Estado:</strong> Ejecutándose pero con errores de importación</p>
-        <p><strong>Error:</strong> {str(e)}</p>
-        <p><strong>Directorio actual:</strong> {os.getcwd()}</p>
-        <p><strong>Python path:</strong> {sys.path[:3]}</p>
-        '''
-    
-    @app.route('/health')
-    def health():
-        return {'status': 'ok', 'message': 'Flask app is running on Vercel'}
+@app.route('/')
+def home():
+    return '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Task Manager - Vercel</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+            .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            h1 { color: #333; text-align: center; }
+            .status { background: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin: 20px 0; }
+            .links { margin: 20px 0; }
+            .links a { display: inline-block; margin: 10px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🚀 Task Manager</h1>
+            <div class="status">
+                ✅ Aplicación Flask desplegada exitosamente en Vercel
+            </div>
+            <p>Esta es una aplicación de gestión de tareas construida con Flask y desplegada en Vercel.</p>
+            <div class="links">
+                <a href="/health">Estado de Salud</a>
+                <a href="/about">Acerca de</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    '''
 
-# Esta línea es importante para Vercel
+@app.route('/health')
+def health():
+    return {
+        'status': 'ok',
+        'message': 'Flask app running successfully on Vercel',
+        'version': '1.0.0'
+    }
+
+@app.route('/about')
+def about():
+    return '''
+    <h1>Acerca del Proyecto</h1>
+    <p>Task Manager - Una aplicación web para gestión de tareas</p>
+    <p><strong>Tecnologías:</strong> Flask, Python, Vercel</p>
+    <p><a href="/">← Volver al inicio</a></p>
+    '''
+
+# Para desarrollo local
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
