@@ -1,53 +1,260 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row mb-3">
-    <div class="col">
-        <h2 class="mb-4 fw-bold text-primary">Mis Tareas</h2>
+<!-- Header with Actions -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h2 class="mb-0 fw-bold text-primary">
+            <i class="fas fa-tasks me-2"></i>Mis Tareas
+        </h2>
     </div>
-    <div class="col-auto">
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
         <button class="btn btn-primary shadow" data-bs-toggle="modal" data-bs-target="#taskModal" onclick="resetForm()">
-            Nueva Tarea
+            <i class="fas fa-plus me-2"></i>Nueva Tarea
         </button>
     </div>
 </div>
 
-<div class="list-group" id="tasks-container">
+<!-- Statistics Cards -->
+<div class="row mb-4" id="stats-container">
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted mb-2">Total</h6>
+                <h3 class="mb-0" id="stat-total">0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted mb-2">En Progreso</h6>
+                <h3 class="mb-0 text-primary" id="stat-in-progress">0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted mb-2">Completadas</h6>
+                <h3 class="mb-0 text-success" id="stat-completed">0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted mb-2">Vencidas</h6>
+                <h3 class="mb-0 text-danger" id="stat-overdue">0</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters and Sorting -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label small text-muted">Estado</label>
+                <select class="form-select form-select-sm" id="filter-status" onchange="loadTasks()">
+                    <option value="all">Todos</option>
+                    <option value="pending">Pendientes</option>
+                    <option value="in_progress">En Progreso</option>
+                    <option value="completed">Completadas</option>
+                    <option value="cancelled">Canceladas</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small text-muted">Prioridad</label>
+                <select class="form-select form-select-sm" id="filter-priority" onchange="loadTasks()">
+                    <option value="all">Todas</option>
+                    <option value="4">Urgente</option>
+                    <option value="3">Alta</option>
+                    <option value="2">Media</option>
+                    <option value="1">Baja</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small text-muted">Categoría</label>
+                <select class="form-select form-select-sm" id="filter-category" onchange="loadTasks()">
+                    <option value="all">Todas</option>
+                    <option value="personal">Personal</option>
+                    <option value="work">Trabajo</option>
+                    <option value="study">Estudio</option>
+                    <option value="health">Salud</option>
+                    <option value="shopping">Compras</option>
+                    <option value="other">Otra</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small text-muted">Ordenar por</label>
+                <select class="form-select form-select-sm" id="sort-by" onchange="loadTasks()">
+                    <option value="due_date">Fecha Vencimiento</option>
+                    <option value="priority">Prioridad</option>
+                    <option value="created_at">Fecha Creación</option>
+                    <option value="title">Título</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tasks List -->
+<div class="row" id="tasks-container">
     <!-- Las tareas se cargarán aquí mediante JavaScript -->
-    <div class="list-group-item text-center text-muted py-3">
-        <div class="spinner-border spinner-border-sm me-2" role="status">
+    <div class="col-12 text-center text-muted py-5">
+        <div class="spinner-border spinner-border-lg me-2" role="status">
             <span class="visually-hidden">Cargando...</span>
         </div>
-        Cargando tareas...
+        <p class="mt-3">Cargando tareas...</p>
     </div>
 </div>
 
 <!-- Modal para agregar/editar tareas -->
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="taskModalLabel">Tarea</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="taskModalLabel">
+                    <i class="fas fa-tasks me-2"></i>Nueva Tarea
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="taskForm">
                     <input type="hidden" id="taskId" value="">
-                    <div class="mb-3">
-                        <label for="taskTitle" class="form-label">Título</label>
-                        <input type="text" class="form-control" id="taskTitle" required>
+                    
+                    <!-- Basic Info -->
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="taskTitle" class="form-label fw-bold">
+                                <i class="fas fa-heading me-1"></i>Título *
+                            </label>
+                            <input type="text" class="form-control" id="taskTitle" required maxlength="100" placeholder="Ej: Completar informe trimestral">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="taskDescription" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="taskDescription" rows="3"></textarea>
+                    
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label for="taskDescription" class="form-label fw-bold">
+                                <i class="fas fa-align-left me-1"></i>Descripción
+                            </label>
+                            <textarea class="form-control" id="taskDescription" rows="3" maxlength="500" placeholder="Describe los detalles de la tarea..."></textarea>
+                            <div class="form-text">Máximo 500 caracteres</div>
+                        </div>
                     </div>
-                    <div class="mb-3 form-check" id="completedContainer" style="display: none;">
-                        <input type="checkbox" class="form-check-input" id="taskCompleted">
-                        <label class="form-check-label" for="taskCompleted">Completada</label>
+                    
+                    <!-- Priority, Status, Category -->
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="taskPriority" class="form-label fw-bold">
+                                <i class="fas fa-exclamation-circle me-1"></i>Prioridad
+                            </label>
+                            <select class="form-select" id="taskPriority">
+                                <option value="1">🟢 Baja</option>
+                                <option value="2" selected>🔵 Media</option>
+                                <option value="3">🟡 Alta</option>
+                                <option value="4">🔴 Urgente</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="taskStatus" class="form-label fw-bold">
+                                <i class="fas fa-spinner me-1"></i>Estado
+                            </label>
+                            <select class="form-select" id="taskStatus">
+                                <option value="pending" selected>Pendiente</option>
+                                <option value="in_progress">En Progreso</option>
+                                <option value="completed">Completada</option>
+                                <option value="cancelled">Cancelada</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="taskCategory" class="form-label fw-bold">
+                                <i class="fas fa-tag me-1"></i>Categoría
+                            </label>
+                            <select class="form-select" id="taskCategory">
+                                <option value="personal" selected>Personal</option>
+                                <option value="work">Trabajo</option>
+                                <option value="study">Estudio</option>
+                                <option value="health">Salud</option>
+                                <option value="shopping">Compras</option>
+                                <option value="other">Otra</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    
+                    <!-- Dates -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="taskStartDate" class="form-label fw-bold">
+                                <i class="fas fa-calendar-day me-1"></i>Fecha Inicio
+                            </label>
+                            <input type="datetime-local" class="form-control" id="taskStartDate">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="taskDueDate" class="form-label fw-bold">
+                                <i class="fas fa-calendar-check me-1"></i>Fecha Vencimiento
+                            </label>
+                            <input type="datetime-local" class="form-control" id="taskDueDate">
+                        </div>
+                    </div>
+                    
+                    <!-- Estimated Time -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="taskEstimatedTime" class="form-label fw-bold">
+                                <i class="fas fa-clock me-1"></i>Tiempo Estimado (minutos)
+                            </label>
+                            <input type="number" class="form-control" id="taskEstimatedTime" min="1" max="10080" placeholder="Ej: 60">
+                            <div class="form-text">1 minuto - 1 semana</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3 d-flex align-items-end">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="taskIsRecurring" onchange="toggleRecurrence()">
+                                <label class="form-check-label fw-bold" for="taskIsRecurring">
+                                    <i class="fas fa-repeat me-1"></i>Tarea Recurrente
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recurrence Section (initially hidden) -->
+                    <div id="recurrenceSection" style="display: none;">
+                        <hr>
+                        <h6 class="fw-bold text-primary mb-3">
+                            <i class="fas fa-sync me-2"></i>Configuración de Recurrencia
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="taskRecurrencePattern" class="form-label fw-bold">Patrón</label>
+                                <select class="form-select" id="taskRecurrencePattern">
+                                    <option value="">No se repite</option>
+                                    <option value="daily">Diaria</option>
+                                    <option value="weekly">Semanal</option>
+                                    <option value="monthly">Mensual</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="taskRecurrenceEndDate" class="form-label fw-bold">Repetir Hasta</label>
+                                <input type="datetime-local" class="form-control" id="taskRecurrenceEndDate">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Guardar
+                        </button>
                     </div>
                 </form>
             </div>
@@ -60,7 +267,22 @@
         document.getElementById('taskId').value = '';
         document.getElementById('taskTitle').value = '';
         document.getElementById('taskDescription').value = '';
-        document.getElementById('completedContainer').style.display = 'none';
+        document.getElementById('taskPriority').value = '2';
+        document.getElementById('taskStatus').value = 'pending';
+        document.getElementById('taskCategory').value = 'personal';
+        document.getElementById('taskStartDate').value = '';
+        document.getElementById('taskDueDate').value = '';
+        document.getElementById('taskEstimatedTime').value = '';
+        document.getElementById('taskIsRecurring').checked = false;
+        document.getElementById('taskRecurrencePattern').value = '';
+        document.getElementById('taskRecurrenceEndDate').value = '';
+        document.getElementById('recurrenceSection').style.display = 'none';
+        document.getElementById('taskModalLabel').innerHTML = '<i class="fas fa-tasks me-2"></i>Nueva Tarea';
+    }
+    
+    function toggleRecurrence() {
+        const isRecurring = document.getElementById('taskIsRecurring').checked;
+        document.getElementById('recurrenceSection').style.display = isRecurring ? 'block' : 'none';
     }
 </script>
 {% endblock %}

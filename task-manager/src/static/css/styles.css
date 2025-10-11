@@ -48,6 +48,68 @@ body {
     box-shadow: 0 1px 4px rgba(0,0,0,0.03);
 }
 
+/* Task Cards */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+/* Task card animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Modal improvements */
+.modal-header.bg-primary {
+    border-radius: calc(0.5rem - 1px) calc(0.5rem - 1px) 0 0;
+}
+
+.modal-lg {
+    max-width: 800px;
+}
+
+/* Form improvements */
+.form-label.fw-bold {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+}
+
+/* Statistics cards */
+#stats-container .card {
+    border-left: 4px solid var(--primary);
+}
+
+#stats-container .card:hover {
+    border-left-color: var(--accent);
+}
+
 /* Navbar responsive */
 @media (max-width: 991.98px) {
     .navbar-nav {
