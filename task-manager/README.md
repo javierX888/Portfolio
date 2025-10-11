@@ -1,17 +1,22 @@
-# Task Manager
+# Task Manager 🎯
 
 Gestor de tareas personal desarrollado con **Flask**, **Bootstrap 5** y **PostgreSQL**. Permite a los usuarios registrarse, iniciar sesión y gestionar sus tareas de manera sencilla y moderna.
 
+🔗 **[Ver Demo en Vivo](https://portfolio-self-ten-9zbsbqm3hp.vercel.app/)**
+
 ---
 
-## Características
+## ✨ Características
 
-- Registro e inicio de sesión de usuarios
-- CRUD de tareas (crear, leer, actualizar, eliminar)
-- Interfaz responsiva con Bootstrap 5 y estilos personalizados
-- API RESTful para operaciones de tareas
-- Autenticación y protección de rutas con Flask-Login
-- Base de datos SQLite lista para producción o desarrollo en Docker o local
+- ✅ **Autenticación completa**: Registro, login y gestión de perfiles de usuario
+- 📝 **CRUD de tareas**: Crear, leer, actualizar y eliminar tareas
+- 👤 **Perfil personalizable**: Sube tu foto de perfil desde archivo o URL
+- 🎨 **Selector de tema**: Cambio entre modo claro, oscuro o automático (sistema)
+- 📱 **Interfaz responsiva**: Diseño optimizado con Bootstrap 5
+- 🔒 **Rutas protegidas**: Autenticación y autorización con Flask-Login
+- 🗄️ **Base de datos PostgreSQL**: Persistencia en la nube con Neon.tech
+- 🚀 **Deployment en Vercel**: Producción lista con serverless functions
+- 🖼️ **Compresión de imágenes**: Optimización automática de fotos de perfil con Pillow
 
 ---
 
@@ -103,12 +108,63 @@ src/
 
 ---
 
-## Licencia
+## 🛠️ Tecnologías Utilizadas
 
-MIT
+- **Backend**: Flask 3.0.0+, SQLAlchemy, Flask-Login, Flask-WTF
+- **Frontend**: Bootstrap 5, Vanilla JavaScript, Font Awesome
+- **Base de datos**: PostgreSQL (Neon.tech)
+- **Deployment**: Vercel Serverless Functions
+- **Procesamiento de imágenes**: Pillow
+- **Autenticación**: Flask-Login con sesiones
 
 ---
 
-## Autor
+## 📸 Screenshots
 
-Desarrollado por [Tu Nombre o Usuario de GitHub]
+_(Agrega capturas de pantalla de tu aplicación aquí)_
+
+---
+
+## 🚀 Roadmap
+
+- [ ] Filtros avanzados para tareas (por fecha, prioridad)
+- [ ] Notificaciones por correo
+- [ ] Compartir tareas con otros usuarios
+- [ ] Categorías y etiquetas para tareas
+- [ ] Exportar tareas a PDF/CSV
+
+---
+
+## 📄 Licencia
+
+MIT License - siéntete libre de usar este proyecto para aprender o como base para tus propios proyectos.
+
+---
+
+## 👨‍💻 Desarrollado por
+
+**Javier Gacitúa**
+
+- 🔗 GitHub: [@javierX888](https://github.com/javierX888)
+- 📂 Proyecto: [Portfolio - Task Manager](https://github.com/javierX888/Portfolio)
+- 💼 LinkedIn: [Javier Gacitúa](https://www.linkedin.com/in/javier-gacitua/)
+
+---
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Si encuentras algún bug o tienes sugerencias:
+
+1. Haz un Fork del proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add: Amazing Feature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+---
+
+<div align="center">
+  <p>⭐ Si te gustó este proyecto, dale una estrella en GitHub ⭐</p>
+  <p>Desarrollado con ❤️ usando Flask, Bootstrap 5 y PostgreSQL</p>
+  <p>© 2025 Javier Gacitúa. Todos los derechos reservados.</p>
+</div>

@@ -86,3 +86,96 @@ body {
 .list-group-item:hover .btn-task {
     opacity: 1;
 }
+
+/* Footer Styles */
+footer {
+    margin-top: auto;
+}
+
+footer a.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+footer hr {
+    opacity: 0.25;
+}
+
+/* Body layout para footer sticky */
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body > .container {
+    flex: 1;
+}
+
+/* Theme Selector Styles */
+#themeDropdown {
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+#themeDropdown:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Theme Adjustments */
+[data-bs-theme="dark"] {
+    --primary: #6366f1;
+    --secondary: #94a3b8;
+    --background: #0f172a;
+    --surface: #1e293b;
+    --text: #e2e8f0;
+}
+
+[data-bs-theme="dark"] body {
+    background-color: var(--background);
+    color: var(--text);
+}
+
+[data-bs-theme="dark"] .card,
+[data-bs-theme="dark"] .modal-content {
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+[data-bs-theme="dark"] .list-group-item {
+    background-color: var(--surface);
+    border-color: rgba(148, 163, 184, 0.1);
+    color: var(--text);
+}
+
+[data-bs-theme="dark"] .list-group-item:hover {
+    background-color: #334155;
+}
+
+[data-bs-theme="dark"] .navbar {
+    background-color: #1e293b !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Smooth transitions for theme changes */
+body,
+.card,
+.modal-content,
+.list-group-item,
+.navbar {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
