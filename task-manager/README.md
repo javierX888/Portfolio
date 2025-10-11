@@ -1,22 +1,68 @@
 # Task Manager 🎯
 
-Gestor de tareas personal desarrollado con **Flask**, **Bootstrap 5** y **PostgreSQL**. Permite a los usuarios registrarse, iniciar sesión y gestionar sus tareas de manera sencilla y moderna.
+<div align="center">
+  
+  ![Task Manager](https://img.shields.io/badge/Flask-3.0+-dc4c3e?style=for-the-badge&logo=flask&logoColor=white)
+  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+  ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+  ![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-🔗 **[Ver Demo en Vivo](https://portfolio-self-ten-9zbsbqm3hp.vercel.app/)**
+  **Sistema avanzado de gestión de tareas con diseño moderno y características profesionales**
+  
+  🔗 **[Ver Demo en Vivo](https://portfolio-self-ten-9zbsbqm3hp.vercel.app/)**
+
+</div>
 
 ---
 
-## ✨ Características
+## 🎨 Diseño Moderno Inspirado en Apps Profesionales
 
-- ✅ **Autenticación completa**: Registro, login y gestión de perfiles de usuario
-- 📝 **CRUD de tareas**: Crear, leer, actualizar y eliminar tareas
-- 👤 **Perfil personalizable**: Sube tu foto de perfil desde archivo o URL
-- 🎨 **Selector de tema**: Cambio entre modo claro, oscuro o automático (sistema)
-- 📱 **Interfaz responsiva**: Diseño optimizado con Bootstrap 5
-- 🔒 **Rutas protegidas**: Autenticación y autorización con Flask-Login
-- 🗄️ **Base de datos PostgreSQL**: Persistencia en la nube con Neon.tech
-- 🚀 **Deployment en Vercel**: Producción lista con serverless functions
-- 🖼️ **Compresión de imágenes**: Optimización automática de fotos de perfil con Pillow
+Interfaz elegante con colores vibrantes, efectos glassmorphism, animaciones suaves y un sistema de diseño coherente. El esquema de colores rojo vibrante (#dc4c3e) está inspirado en aplicaciones líderes del mercado como Todoist.
+
+### ✨ Características Visuales
+
+- 🎨 **Diseño vibrante y moderno** con gradientes y efectos glassmorphism
+- 🌈 **Sistema de prioridades** con 4 niveles de colores (Baja, Media, Alta, Urgente)
+- 📊 **Dashboard de estadísticas** con tarjetas animadas y bordes de colores
+- 🎭 **Tema oscuro/claro** con transiciones suaves y paleta optimizada
+- ✨ **Animaciones fluidas** en cards, botones y transiciones
+- 🎯 **Badges con gradientes** para estados y prioridades
+- �️ **Iconos contextuales** para categorías con código de colores
+
+## 🚀 Características Principales
+
+### 👤 **Gestión de Usuarios**
+- ✅ **Autenticación completa**: Registro, login seguro con hash de contraseñas
+- 👤 **Perfil personalizable**: Sube tu foto desde archivo o URL con compresión automática
+- 🔒 **Rutas protegidas**: Sistema de autorización con Flask-Login
+
+### 📝 **Gestión Avanzada de Tareas**
+- ✅ **CRUD completo**: Crear, leer, actualizar y eliminar tareas
+- 🎯 **4 niveles de prioridad**: Baja (🟢), Media (🔵), Alta (🟡), Urgente (🔴)
+- 📊 **4 estados de seguimiento**: Pendiente, En Progreso, Completada, Cancelada
+- 🏷️ **6 categorías**: Personal, Trabajo, Estudio, Salud, Compras, Otra
+- 📅 **Gestión de fechas**: Inicio, vencimiento con alertas visuales de tareas vencidas
+- ⏱️ **Tiempo estimado**: En minutos para mejor planificación
+- 🔄 **Tareas recurrentes**: Diaria, semanal, mensual con fecha de finalización
+- 📝 **Descripciones detalladas**: Hasta 500 caracteres
+
+### 🔍 **Filtrado y Organización**
+- � **Filtros avanzados**: Por estado, prioridad y categoría
+- 📊 **Ordenamiento personalizable**: Por fecha, prioridad, creación o título
+- 📈 **Dashboard de estadísticas**: Total, en progreso, completadas y vencidas
+
+### 🎨 **Experiencia de Usuario**
+- � **100% responsivo**: Optimizado para desktop, tablet y móvil
+- 🌓 **Selector de tema**: Claro, oscuro o automático (según sistema)
+- ⚡ **Carga rápida**: Serverless functions con Vercel
+- 🎭 **Animaciones suaves**: Feedback visual en todas las interacciones
+- 🖼️ **Compresión de imágenes**: Pillow optimiza fotos de perfil automáticamente
+
+### 🗄️ **Tecnología Backend**
+- 🔒 **Base de datos PostgreSQL**: Persistencia segura en la nube con Neon.tech
+- 🚀 **API RESTful**: Endpoints bien estructurados con filtros y estadísticas
+- 🔐 **Seguridad**: Hashing de contraseñas, protección CSRF, sesiones seguras
+- 📦 **Deployment automatizado**: CI/CD con Vercel
 
 ---
 
