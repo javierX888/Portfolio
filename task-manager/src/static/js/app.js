@@ -265,13 +265,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     window.deleteTask = async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar esta tarea? Esta acción no se puede deshacer.')) {
+        if (confirm('¿Estás seguro de que deseas eliminar esta tarea?')) {
             try {
                 const response = await fetch(`/api/tasks/${id}`, {method: 'DELETE'});
                 if (response.ok) {
                     loadTasks();
-                    loadStats();
-                    showToast('Tarea eliminada correctamente', 'success');
+                    showToast('Tarea eliminada correctamente');
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -285,15 +284,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`/api/tasks/${id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ 
-                    completed,
-                    status: completed ? 'completed' : 'pending'
-                })
+                body: JSON.stringify({ completed })
             });
             
             if (response.ok) {
                 loadTasks();
-                loadStats();
                 showToast(`Tarea marcada como ${completed ? 'completada' : 'pendiente'}`);
             }
         } catch (error) {
