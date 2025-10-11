@@ -147,7 +147,7 @@ MIT License - siéntete libre de usar este proyecto para aprender o como base pa
 
 - 🔗 GitHub: [@javierX888](https://github.com/javierX888)
 - 📂 Proyecto: [Portfolio - Task Manager](https://github.com/javierX888/Portfolio)
-- 💼 LinkedIn: [Javier Gacitúa](https://www.linkedin.com/in/javier-gacitua/)
+- 💼 LinkedIn: [Javier Gacitúa](https://www.linkedin.com/in/javier-gacit%C3%BAa)
 
 ---
 
