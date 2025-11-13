@@ -186,39 +186,49 @@
                         </div>
                     </div>
                     
-                    <!-- Dates -->
+                    <!-- Dates and Time -->
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label for="taskStartDate" class="form-label fw-bold">
-                                <i class="fas fa-calendar-day me-1"></i>Fecha Inicio
+                                <i class="fas fa-calendar-day me-1"></i>Fecha Inicio *
                             </label>
-                            <input type="datetime-local" class="form-control" id="taskStartDate">
+                            <input type="date" class="form-control" id="taskStartDate" required>
                         </div>
                         
-                        <div class="col-md-6 mb-3">
-                            <label for="taskDueDate" class="form-label fw-bold">
-                                <i class="fas fa-calendar-check me-1"></i>Fecha Vencimiento
+                        <div class="col-md-3 mb-3">
+                            <label for="taskStartTime" class="form-label fw-bold">
+                                <i class="fas fa-clock me-1"></i>Hora Inicio *
                             </label>
-                            <input type="datetime-local" class="form-control" id="taskDueDate">
+                            <input type="time" class="form-control" id="taskStartTime" required>
+                        </div>
+                        
+                        <div class="col-md-3 mb-3">
+                            <label for="taskEstimatedTime" class="form-label fw-bold">
+                                <i class="fas fa-hourglass-half me-1"></i>Duración (min) *
+                            </label>
+                            <input type="number" class="form-control" id="taskEstimatedTime" min="1" max="10080" placeholder="60" required>
+                            <div class="form-text">1-10080 min (1 semana)</div>
+                        </div>
+                        
+                        <div class="col-md-3 mb-3">
+                            <label for="taskDueDate" class="form-label fw-bold">
+                                <i class="fas fa-calendar-check me-1"></i>Vence
+                            </label>
+                            <input type="text" class="form-control bg-light" id="taskDueDate" readonly placeholder="Auto-calculado">
+                            <div class="form-text text-primary">Se calcula automáticamente</div>
                         </div>
                     </div>
                     
-                    <!-- Estimated Time -->
+                    
+                    <!-- Recurrence Checkbox -->
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="taskEstimatedTime" class="form-label fw-bold">
-                                <i class="fas fa-clock me-1"></i>Tiempo Estimado (minutos)
-                            </label>
-                            <input type="number" class="form-control" id="taskEstimatedTime" min="1" max="10080" placeholder="Ej: 60">
-                            <div class="form-text">1 minuto - 1 semana</div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-3 d-flex align-items-end">
+                        <div class="col-12 mb-3">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="taskIsRecurring" onchange="toggleRecurrence()">
                                 <label class="form-check-label fw-bold" for="taskIsRecurring">
                                     <i class="fas fa-repeat me-1"></i>Tarea Recurrente
                                 </label>
+                                <div class="form-text">Activa si la tarea se repite periódicamente</div>
                             </div>
                         </div>
                     </div>
@@ -230,19 +240,29 @@
                             <i class="fas fa-sync me-2"></i>Configuración de Recurrencia
                         </h6>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="taskRecurrencePattern" class="form-label fw-bold">Patrón</label>
+                            <div class="col-md-4 mb-3">
+                                <label for="taskRecurrencePattern" class="form-label fw-bold">Patrón *</label>
                                 <select class="form-select" id="taskRecurrencePattern">
-                                    <option value="">No se repite</option>
+                                    <option value="">Seleccionar</option>
                                     <option value="daily">Diaria</option>
                                     <option value="weekly">Semanal</option>
                                     <option value="monthly">Mensual</option>
                                 </select>
                             </div>
                             
-                            <div class="col-md-6 mb-3">
-                                <label for="taskRecurrenceEndDate" class="form-label fw-bold">Repetir Hasta</label>
-                                <input type="datetime-local" class="form-control" id="taskRecurrenceEndDate">
+                            <div class="col-md-4 mb-3">
+                                <label for="taskRecurrenceEndDate" class="form-label fw-bold">
+                                    Repetir Hasta (Fecha)
+                                </label>
+                                <input type="date" class="form-control" id="taskRecurrenceEndDate">
+                                <div class="form-text">Fecha límite para crear nuevas instancias</div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="taskRecurrenceEndTime" class="form-label fw-bold">
+                                    Repetir Hasta (Hora)
+                                </label>
+                                <input type="time" class="form-control" id="taskRecurrenceEndTime">
                             </div>
                         </div>
                     </div>

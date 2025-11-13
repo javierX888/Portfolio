@@ -87,6 +87,11 @@ def create_task():
         if data.get('recurrence_end_date'):
             recurrence_end_date = datetime.fromisoformat(data['recurrence_end_date'].replace('Z', '+00:00'))
         
+        # Auto-calculate due_date if start_date and estimated_time are provided
+        estimated_time = data.get('estimated_time')
+        if start_date and estimated_time and not due_date:
+            due_date = start_date + timedelta(minutes=int(estimated_time))
+        
         # Create task
         task = Task(
             title=data['title'],
@@ -96,7 +101,7 @@ def create_task():
             category=data.get('category', 'personal'),
             start_date=start_date,
             due_date=due_date,
-            estimated_time=data.get('estimated_time'),
+            estimated_time=estimated_time,
             is_recurring=data.get('is_recurring', False),
             recurrence_pattern=data.get('recurrence_pattern'),
             recurrence_end_date=recurrence_end_date,
@@ -162,6 +167,10 @@ def update_task(id):
         # Update time tracking
         if 'estimated_time' in data:
             task.estimated_time = data['estimated_time']
+        
+        # Auto-calculate due_date if start_date and estimated_time changed
+        if task.start_date and task.estimated_time:
+            task.due_date = task.start_date + timedelta(minutes=int(task.estimated_time))
         
         # Update recurrence
         if 'is_recurring' in data:

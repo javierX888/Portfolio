@@ -111,3 +111,10 @@ class Task(db.Model):
         if self.due_date and not self.completed:
             return datetime.utcnow() > self.due_date
         return False
+    
+    def calculate_due_date(self):
+        """Calculate due date from start date and estimated time"""
+        if self.start_date and self.estimated_time:
+            from datetime import timedelta
+            return self.start_date + timedelta(minutes=self.estimated_time)
+        return None

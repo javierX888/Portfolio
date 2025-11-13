@@ -7,10 +7,55 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTasks();
     loadStats();
     
+    // Event listeners para calcular fecha de vencimiento automáticamente
+    const startDateInput = document.getElementById('taskStartDate');
+    const startTimeInput = document.getElementById('taskStartTime');
+    const estimatedTimeInput = document.getElementById('taskEstimatedTime');
+    const dueDateDisplay = document.getElementById('taskDueDate');
+    
+    [startDateInput, startTimeInput, estimatedTimeInput].forEach(input => {
+        input.addEventListener('change', calculateAndDisplayDueDate);
+        input.addEventListener('input', calculateAndDisplayDueDate);
+    });
+    
+    function calculateAndDisplayDueDate() {
+        const startDate = startDateInput.value;
+        const startTime = startTimeInput.value;
+        const estimatedMinutes = parseInt(estimatedTimeInput.value);
+        
+        if (startDate && startTime && estimatedMinutes > 0) {
+            const startDateTime = new Date(`${startDate}T${startTime}`);
+            const dueDateTime = new Date(startDateTime.getTime() + estimatedMinutes * 60000);
+            
+            // Formatear para mostrar en el campo readonly
+            const formattedDueDate = dueDateTime.toLocaleString('es-ES', {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            dueDateDisplay.value = formattedDueDate;
+        } else {
+            dueDateDisplay.value = '';
+        }
+    }
+    
     // Manejar envío del formulario
     taskForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const taskId = document.getElementById('taskId').value;
+        
+        // Combinar fecha y hora de inicio
+        const startDate = document.getElementById('taskStartDate').value;
+        const startTime = document.getElementById('taskStartTime').value;
+        const startDateTime = startDate && startTime ? `${startDate}T${startTime}` : null;
+        
+        // Combinar fecha y hora de recurrencia
+        const recurrenceEndDate = document.getElementById('taskRecurrenceEndDate').value;
+        const recurrenceEndTime = document.getElementById('taskRecurrenceEndTime').value;
+        const recurrenceEndDateTime = recurrenceEndDate && recurrenceEndTime ? `${recurrenceEndDate}T${recurrenceEndTime}` : (recurrenceEndDate ? `${recurrenceEndDate}T00:00` : null);
         
         // Recopilar todos los datos del formulario
         const taskData = {
@@ -19,12 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
             priority: parseInt(document.getElementById('taskPriority').value),
             status: document.getElementById('taskStatus').value,
             category: document.getElementById('taskCategory').value,
-            start_date: document.getElementById('taskStartDate').value || null,
-            due_date: document.getElementById('taskDueDate').value || null,
+            start_date: startDateTime,
             estimated_time: document.getElementById('taskEstimatedTime').value ? parseInt(document.getElementById('taskEstimatedTime').value) : null,
             is_recurring: document.getElementById('taskIsRecurring').checked,
             recurrence_pattern: document.getElementById('taskIsRecurring').checked ? document.getElementById('taskRecurrencePattern').value : null,
-            recurrence_end_date: document.getElementById('taskRecurrenceEndDate').value || null
+            recurrence_end_date: recurrenceEndDateTime
         };
         
         try {
@@ -227,23 +271,38 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('taskStatus').value = task.status;
             document.getElementById('taskCategory').value = task.category;
             
-            // Formatear fechas para datetime-local
+            // Separar fecha y hora de inicio
             if (task.start_date) {
-                document.getElementById('taskStartDate').value = formatDateForInput(task.start_date);
-            }
-            if (task.due_date) {
-                document.getElementById('taskDueDate').value = formatDateForInput(task.due_date);
+                const startDate = new Date(task.start_date);
+                document.getElementById('taskStartDate').value = startDate.toISOString().split('T')[0];
+                document.getElementById('taskStartTime').value = startDate.toTimeString().slice(0, 5);
+            } else {
+                document.getElementById('taskStartDate').value = '';
+                document.getElementById('taskStartTime').value = '';
             }
             
             document.getElementById('taskEstimatedTime').value = task.estimated_time || '';
+            
+            // Calcular y mostrar fecha de vencimiento
+            calculateAndDisplayDueDate();
+            
             document.getElementById('taskIsRecurring').checked = task.is_recurring;
             
             if (task.is_recurring) {
                 document.getElementById('recurrenceSection').style.display = 'block';
                 document.getElementById('taskRecurrencePattern').value = task.recurrence_pattern || '';
+                
+                // Separar fecha y hora de recurrencia
                 if (task.recurrence_end_date) {
-                    document.getElementById('taskRecurrenceEndDate').value = formatDateForInput(task.recurrence_end_date);
+                    const recurrenceDate = new Date(task.recurrence_end_date);
+                    document.getElementById('taskRecurrenceEndDate').value = recurrenceDate.toISOString().split('T')[0];
+                    document.getElementById('taskRecurrenceEndTime').value = recurrenceDate.toTimeString().slice(0, 5);
+                } else {
+                    document.getElementById('taskRecurrenceEndDate').value = '';
+                    document.getElementById('taskRecurrenceEndTime').value = '';
                 }
+            } else {
+                document.getElementById('recurrenceSection').style.display = 'none';
             }
             
             document.getElementById('taskModalLabel').innerHTML = '<i class="fas fa-edit me-2"></i>Editar Tarea';
@@ -289,12 +348,26 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (response.ok) {
                 loadTasks();
+                loadStats();
                 showToast(`Tarea marcada como ${completed ? 'completada' : 'pendiente'}`);
             }
         } catch (error) {
             console.error('Error:', error);
             showToast('Error al actualizar el estado de la tarea', 'danger');
         }
+    };
+    
+    window.resetForm = () => {
+        document.getElementById('taskForm').reset();
+        document.getElementById('taskId').value = '';
+        document.getElementById('taskDueDate').value = '';
+        document.getElementById('recurrenceSection').style.display = 'none';
+        document.getElementById('taskModalLabel').innerHTML = '<i class="fas fa-tasks me-2"></i>Nueva Tarea';
+    };
+    
+    window.toggleRecurrence = () => {
+        const isRecurring = document.getElementById('taskIsRecurring').checked;
+        document.getElementById('recurrenceSection').style.display = isRecurring ? 'block' : 'none';
     };
     
     function showToast(message, type = 'success') {
