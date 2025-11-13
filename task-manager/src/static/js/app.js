@@ -52,10 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const startTime = document.getElementById('taskStartTime').value;
         const startDateTime = startDate && startTime ? `${startDate}T${startTime}` : null;
         
-        // Combinar fecha y hora de recurrencia
+        // Fecha de recurrencia (sin hora - se usa 23:59:59 para indicar fin del día)
         const recurrenceEndDate = document.getElementById('taskRecurrenceEndDate').value;
-        const recurrenceEndTime = document.getElementById('taskRecurrenceEndTime').value;
-        const recurrenceEndDateTime = recurrenceEndDate && recurrenceEndTime ? `${recurrenceEndDate}T${recurrenceEndTime}` : (recurrenceEndDate ? `${recurrenceEndDate}T00:00` : null);
+        const recurrenceEndDateTime = recurrenceEndDate ? `${recurrenceEndDate}T23:59:59` : null;
         
         // Recopilar todos los datos del formulario
         const taskData = {
@@ -292,14 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('recurrenceSection').style.display = 'block';
                 document.getElementById('taskRecurrencePattern').value = task.recurrence_pattern || '';
                 
-                // Separar fecha y hora de recurrencia
+                // Solo fecha de recurrencia (sin hora)
                 if (task.recurrence_end_date) {
                     const recurrenceDate = new Date(task.recurrence_end_date);
                     document.getElementById('taskRecurrenceEndDate').value = recurrenceDate.toISOString().split('T')[0];
-                    document.getElementById('taskRecurrenceEndTime').value = recurrenceDate.toTimeString().slice(0, 5);
                 } else {
                     document.getElementById('taskRecurrenceEndDate').value = '';
-                    document.getElementById('taskRecurrenceEndTime').value = '';
                 }
             } else {
                 document.getElementById('recurrenceSection').style.display = 'none';

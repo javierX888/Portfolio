@@ -240,7 +240,7 @@
                             <i class="fas fa-sync me-2"></i>Configuración de Recurrencia
                         </h6>
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="taskRecurrencePattern" class="form-label fw-bold">Patrón *</label>
                                 <select class="form-select" id="taskRecurrencePattern">
                                     <option value="">Seleccionar</option>
@@ -248,22 +248,20 @@
                                     <option value="weekly">Semanal</option>
                                     <option value="monthly">Mensual</option>
                                 </select>
+                                <div class="form-text">¿Cada cuánto se repite la tarea?</div>
                             </div>
                             
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="taskRecurrenceEndDate" class="form-label fw-bold">
-                                    Repetir Hasta (Fecha)
+                                    <i class="fas fa-calendar-times me-1"></i>Repetir Hasta
                                 </label>
                                 <input type="date" class="form-control" id="taskRecurrenceEndDate">
-                                <div class="form-text">Fecha límite para crear nuevas instancias</div>
+                                <div class="form-text">Fecha límite para dejar de crear nuevas tareas</div>
                             </div>
-                            
-                            <div class="col-md-4 mb-3">
-                                <label for="taskRecurrenceEndTime" class="form-label fw-bold">
-                                    Repetir Hasta (Hora)
-                                </label>
-                                <input type="time" class="form-control" id="taskRecurrenceEndTime">
-                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info small mt-2" role="alert">
+                            <i class="fas fa-info-circle me-1"></i><strong>Ejemplo:</strong> Si la tarea inicia el 13/11/2025 a las 07:00 con patrón diario y repetir hasta el 20/11/2025, se crearán tareas automáticamente cada día a las 07:00 hasta el 20/11/2025.
                         </div>
                     </div>
                     
